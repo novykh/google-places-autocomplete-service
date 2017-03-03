@@ -1,0 +1,32 @@
+{
+  "name": "google_places",
+  "version": "0.0.0",
+  "description": "A simple factory using google places API to fetch predictions for places and get place details.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rimraf dist",
+    "build": "babel --out-dir dist src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/novykh/google-places-autocomplete-service.git"
+  },
+  "keywords": [
+    "google",
+    "places",
+    "autocomplete"
+  ],
+  "author": "Johnny Klironomos <ioannis.klironomos@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/novykh/google-places-autocomplete-service/issues"
+  },
+  "homepage": "https://github.com/novykh/google-places-autocomplete-service#readme",
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "rimraf": "^2.6.1"
+  }
+}
