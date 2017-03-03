@@ -66,8 +66,7 @@ var getSearchStrategies = exports.getSearchStrategies = function getSearchStrate
     var isValid = _constants.validStrategies.includes(s);
 
     if (!isValid) {
-      console.error(s + ' is not a valid strategy - skipped');
-
+      throw new Error(s + ' is not a valid strategy');
       return false;
     }
 

@@ -37,11 +37,15 @@ export default function googlePlaces({...options}) {
   const searchStrategies = getSearchStrategies(options);
 
   return {
-    getPredictions(input = '', callback, rejectRegex = null) {
+    getPredictions(input = '', callback = (noop => noop), rejectRegex = null) {
       return new Promise((resolve, reject) => {
         if (!input) {
           reject(status.INVALID_INPUT);
           return;
+        }
+
+        if (!(rejectRegex instanceof RegExp)) {
+          throw new Error('Pass a valid regex as third argument.');
         }
 
         googleAutocompleteService.getPlacePredictions({
@@ -73,7 +77,7 @@ export default function googlePlaces({...options}) {
       });
     },
 
-    getPlace(placeId, prediction, callback) {
+    getPlace(placeId, prediction, callback = (noop => noop)) {
       if (!prediction || typeof prediction !== 'object') {
         prediction = {};
       }

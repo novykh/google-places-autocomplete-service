@@ -45,13 +45,19 @@ function googlePlaces(_ref) {
   return {
     getPredictions: function getPredictions() {
       var input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-      var callback = arguments[1];
+      var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (noop) {
+        return noop;
+      };
       var rejectRegex = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
       return new Promise(function (resolve, reject) {
         if (!input) {
           reject(_constants.status.INVALID_INPUT);
           return;
+        }
+
+        if (!(rejectRegex instanceof RegExp)) {
+          throw new Error('Pass a valid regex as third argument.');
         }
 
         googleAutocompleteService.getPlacePredictions({
@@ -78,8 +84,12 @@ function googlePlaces(_ref) {
         });
       });
     },
-    getPlace: function getPlace(placeId, prediction, callback) {
+    getPlace: function getPlace(placeId, prediction) {
       var _this = this;
+
+      var callback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (noop) {
+        return noop;
+      };
 
       if (!prediction || (typeof prediction === 'undefined' ? 'undefined' : _typeof(prediction)) !== 'object') {
         prediction = {};
