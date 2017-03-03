@@ -1,2 +1,115 @@
 # google-places-autocomplete-service
 A simple factory using google places API to fetch predictions for places and get place details.
+
+## Installation
+`npm i -S angular-google-places-autocomplete`
+
+Then add the Google Places API script to your page:
+
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+
+## Usage
+
+First add the dependency to your app:
+
+```
+import googlePlacesService from 'google-places-autocomplete-service';
+```
+
+Then initialize the service:
+```
+this.googlePlaces = googlePlacesService(options);
+```
+
+Then get predictions:
+```
+this.googlePlaces.getPredictions('example text', callback);
+```
+
+Then get place info:
+```
+this.googlePlaces.getPlace('example text', predictionObject, callback);
+```
+
+And that's it.
+
+## Configuration
+
+The service accepts some options on initialization, for example:
+```
+this.googlePlaces = googlePlacesService({
+  type: 'geocode',
+  filterByCountry: 'US',
+  outputPlaceTypes: [
+    'postalCode',
+    'locality',
+    'administrativeAreaLevel1',
+    'country'
+  ],
+  searchStrategies: [
+    'searchByPlaceId'
+  ]
+});
+```
+
+### The type option:
+This option will be used in `getPredictions` to filter predictions results - if none is passed `geocode` will be used as a default.
+
+#### Valid types:
+* geocode
+* address
+* establishment
+* (regions)
+* (cities)
+
+### The filterByCountry option:
+This option will be used in `getPredictions` to restrict the predictions results to a country.
+Accepts uppercase ISO Alpha-2 country code - if none is passed then it will output global predictions.
+
+### The outputPlaceTypes option:
+This option will be used in `getPlace` to make sure it will return a place with those place info types included.
+
+#### Valid types:
+* streetAddress
+* route
+* streetNumber
+* neighborhood
+* postalCode
+* sublocality
+* locality
+* administrativeAreaLevel1
+* administrativeAreaLevel2
+* administrativeAreaLevel3
+* administrativeAreaLevel4
+* administrativeAreaLevel5
+* country
+
+### The searchStrategies option:
+This option will be used in `getPlace` and will search for the specified place with the strategies passed - if none is passed then it will use all the strategies needed.
+
+### `getPredictions(input, callback, regex)`
+Retrieves place autocomplete predictions based on the supplied arguments.
+`Return value:  None`
+
+- `input`:    string - The user entered input string.
+- `callback`: function - What to do with the results i.e: `(predictions) => console.log(predictions)`.
+- `regex`:    regexp - A regex to filter out predictions.
+
+### `getPlace(placeId, prediction, callback)`
+Retrieves details about the place.
+`Return value: None`
+
+- `placeId`:    string - the prediction's place ID.
+- `prediction`: object - the prediction :)
+  - `type`:  string - prediction's first of types.
+  - `terms`: array - prediction's string tokens.
+  - `body`:  string - prediction's body.
+- `callback`: function - What to do with the result i.e: `(placeInfo) => console.log(placeInfo)`.
+
+## Issues or feature requests
+
+Create a ticket [here](https://github.com/novykh/google-places-autocomplete-service/issues)
+
+## Contributing
+
+Issue a pull request.
