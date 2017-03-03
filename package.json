@@ -1,6 +1,6 @@
 {
   "name": "google-places-autocomplete-service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple factory using google places API to fetch predictions for places and get place details.",
   "main": "dist/index.js",
   "scripts": {
