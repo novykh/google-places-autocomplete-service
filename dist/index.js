@@ -25,7 +25,7 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 function googlePlaces(_ref) {
   var options = _objectWithoutProperties(_ref, []);
 
-  var _initialize = (0, _config2.default)(),
+  var _initialize = (0, _config2.default)(options),
       getGoogleAutocompleteService = _initialize.getGoogleAutocompleteService,
       getGooglePlacesService = _initialize.getGooglePlacesService,
       getGeocoder = _initialize.getGeocoder;
@@ -34,8 +34,8 @@ function googlePlaces(_ref) {
   var googlePlacesService = getGooglePlacesService();
   var geocoder = getGeocoder();
 
-  this.longitude = null;
-  this.latitude = null;
+  this.longitude = options.longitude || null;
+  this.latitude = options.latitude || null;
 
   var componentRestrictions = (0, _helpers.getRestrictions)(options);
   var placeTypes = (0, _helpers.getPlaceTypes)(options);
@@ -84,10 +84,10 @@ function googlePlaces(_ref) {
         });
       });
     },
-    getPlace: function getPlace(placeId, prediction) {
+    getPlace: function getPlace(prediction) {
       var _this = this;
 
-      var callback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (noop) {
+      var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (noop) {
         return noop;
       };
 
@@ -96,16 +96,14 @@ function googlePlaces(_ref) {
       }
 
       var _prediction = prediction,
+          _prediction$placeId = _prediction.placeId,
+          placeId = _prediction$placeId === undefined ? '' : _prediction$placeId,
           predictionType = _prediction.type,
           _prediction$terms = _prediction.terms,
           terms = _prediction$terms === undefined ? [] : _prediction$terms,
           body = _prediction.body;
 
       var predictionTerms = terms.slice();
-
-      if (placeId === '' || !body) {
-        return callback((0, _helpers.emptyResults)(_constants.status.NO_RESULTS));
-      }
 
       var resultComponents = {};
 
@@ -200,6 +198,14 @@ function googlePlaces(_ref) {
       var searchWithGeocoder = function searchWithGeocoder() {
         var addressComponents = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
+        if (typeof _this.latitude !== 'number') {
+          throw new Error('Latitude is invalid');
+        }
+
+        if (typeof _this.longitude !== 'number') {
+          throw new Error('Longitude is invalid');
+        }
+
         return new Promise(function (resolve, reject) {
           geocoder.geocode({
             latLng: (0, _helpers.getLatLong)(_this.latitude, _this.longitude)
@@ -251,12 +257,13 @@ function googlePlaces(_ref) {
           searchWithGeocoder: searchWithGeocoder
         };
 
-        return (0, _helpers.pipeStrategies)(searchStrategies, placeStrategies, resolveFunc).then(function (addressComponents) {
-          return outputResult(addressComponents);
+        (0, _helpers.pipeStrategies)(searchStrategies, placeStrategies, resolveFunc).then(function (addressComponents) {
+          return callback(outputResult(addressComponents));
         }).catch(function (error) {
           return callback((0, _helpers.emptyResults)(error));
         });
       } catch (e) {
+        console.error(e);
         return callback((0, _helpers.emptyResults)(_constants.status.NO_RESULTS));
       }
     }

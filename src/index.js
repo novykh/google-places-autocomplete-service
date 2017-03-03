@@ -20,9 +20,9 @@ import {
 export default function googlePlaces({...options}) {
   const {
     getGoogleAutocompleteService,
-    getGooglePlacesService(options.mapId),
+    getGooglePlacesService,
     getGeocoder
-  } = initialize();
+  } = initialize(options);
 
   const googleAutocompleteService = getGoogleAutocompleteService();
   const googlePlacesService = getGooglePlacesService();
@@ -89,10 +89,6 @@ export default function googlePlaces({...options}) {
         body
       } = prediction;
       const predictionTerms = terms.slice();
-
-      if (placeId === '' || !body) {
-        return callback(emptyResults(status.NO_RESULTS));
-      }
 
       let resultComponents = {};
 
@@ -196,11 +192,11 @@ export default function googlePlaces({...options}) {
       };
 
       const searchWithGeocoder = (addressComponents = {}) => {
-        if (typeof this.latitude !== 'string') {
+        if (typeof this.latitude !== 'number') {
           throw new Error('Latitude is invalid');
         }
 
-        if (typeof this.longitude !== 'string') {
+        if (typeof this.longitude !== 'number') {
           throw new Error('Longitude is invalid');
         }
 
@@ -264,11 +260,12 @@ export default function googlePlaces({...options}) {
           searchWithGeocoder
         };
 
-        return pipeStrategies(searchStrategies, placeStrategies, resolveFunc)
-          .then(addressComponents => outputResult(addressComponents))
+        pipeStrategies(searchStrategies, placeStrategies, resolveFunc)
+          .then(addressComponents => callback(outputResult(addressComponents)))
           .catch(error => callback(emptyResults(error)));
 
       } catch (e) {
+        console.error(e);
         return callback(emptyResults(status.NO_RESULTS));
       }
     }

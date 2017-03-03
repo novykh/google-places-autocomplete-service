@@ -1,4 +1,4 @@
-export default function init() {
+export default function init({mapId}) {
   if (!global.google || !global.google.maps) {
     throw new Error('Please import google maps');
   }
@@ -12,16 +12,18 @@ export default function init() {
       return new global.google.maps.places
         .AutocompleteService();
     },
-    getGooglePlacesService: mapId => {
+    getGooglePlacesService: () => {
       if (mapId && typeof mapId !== 'string') {
         throw new Error('MapId is invalid');
       }
 
       let map;
       if (mapId) {
-        map = document.getElementById(mapId)
+        map = document.getElementById(mapId);
 
-        !map && throw new Error('Couldn\'t find map in document');
+        if (!map) {
+          throw new Error('Couldn\'t find map in document');
+        }
       }
 
       return new global.google.maps.places
