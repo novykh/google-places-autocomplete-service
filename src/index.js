@@ -20,7 +20,7 @@ import {
 export default function googlePlaces({...options}) {
   const {
     getGoogleAutocompleteService,
-    getGooglePlacesService,
+    getGooglePlacesService(options.mapId),
     getGeocoder
   } = initialize();
 
@@ -28,8 +28,8 @@ export default function googlePlaces({...options}) {
   const googlePlacesService = getGooglePlacesService();
   const geocoder = getGeocoder();
 
-  this.longitude = null;
-  this.latitude = null;
+  this.longitude = options.longitude || null;
+  this.latitude = options.latitude || null;
 
   const componentRestrictions = getRestrictions(options);
   const placeTypes = getPlaceTypes(options);
@@ -77,12 +77,13 @@ export default function googlePlaces({...options}) {
       });
     },
 
-    getPlace(placeId, prediction, callback = (noop => noop)) {
+    getPlace(prediction, callback = (noop => noop)) {
       if (!prediction || typeof prediction !== 'object') {
         prediction = {};
       }
 
       const {
+        placeId = '',
         type: predictionType,
         terms = [],
         body
@@ -195,6 +196,14 @@ export default function googlePlaces({...options}) {
       };
 
       const searchWithGeocoder = (addressComponents = {}) => {
+        if (typeof this.latitude !== 'string') {
+          throw new Error('Latitude is invalid');
+        }
+
+        if (typeof this.longitude !== 'string') {
+          throw new Error('Longitude is invalid');
+        }
+
         return new Promise((resolve, reject) => {
           geocoder.geocode({
             latLng: getLatLong(this.latitude, this.longitude)

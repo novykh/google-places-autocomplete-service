@@ -28,7 +28,7 @@ this.googlePlaces.getPredictions('example text', callback);
 
 Then get place info:
 ```
-this.googlePlaces.getPlace('example text', predictionObject, callback);
+this.googlePlaces.getPlace(predictionObject, callback);
 ```
 
 And that's it.
@@ -87,6 +87,9 @@ This option will be used in `getPlace` to make sure it will return a place with 
 ### The searchStrategies option:
 This option will be used in `getPlace` and will search for the specified place with the strategies passed - if none is passed then it will use all the strategies needed.
 
+### Extra options:
+* `longitude` and `latitude` are optional, but required if use only `searchWithGeocoder` and nothing else.
+
 ### `getPredictions(input, callback, regex)`
 Retrieves place autocomplete predictions based on the supplied arguments.
 `Return value:  None`
@@ -95,12 +98,12 @@ Retrieves place autocomplete predictions based on the supplied arguments.
 - `callback`: function - What to do with the results i.e: `(predictions) => console.log(predictions)`.
 - `regex`:    regexp - A regex to filter out predictions.
 
-### `getPlace(placeId, prediction, callback)`
+### `getPlace(prediction, callback)`
 Retrieves details about the place.
 `Return value: None`
 
-- `placeId`:    string - the prediction's place ID.
 - `prediction`: object - the prediction :)
+  - `placeId`:    string - the prediction's place ID.
   - `type`:  string - prediction's first of types.
   - `terms`: array - prediction's string tokens.
   - `body`:  string - prediction's body.

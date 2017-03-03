@@ -12,9 +12,20 @@ export default function init() {
       return new global.google.maps.places
         .AutocompleteService();
     },
-    getGooglePlacesService: () => {
+    getGooglePlacesService: mapId => {
+      if (mapId && typeof mapId !== 'string') {
+        throw new Error('MapId is invalid');
+      }
+
+      let map;
+      if (mapId) {
+        map = document.getElementById(mapId)
+
+        !map && throw new Error('Couldn\'t find map in document');
+      }
+
       return new global.google.maps.places
-        .PlacesService(document.createElement('div'));
+        .PlacesService(map || document.createElement('div'));
     },
     getGeocoder: () => new global.google.maps.Geocoder()
   };
