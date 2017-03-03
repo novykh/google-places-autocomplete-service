@@ -96,7 +96,23 @@ Retrieves place autocomplete predictions based on the supplied arguments.
 
 - `input`:    string - The user entered input string.
 - `callback`: function - What to do with the results i.e: `(predictions) => console.log(predictions)`.
-- `regex`:    regexp - A regex to filter out predictions.
+- `regex`:    regexp - (optional) A regex to filter out predictions.
+
+The predictions object passing to the callback, is an object of placeIds as keys and the corresponding info of the prediction. Like that:
+```
+{
+  ChIJOwg_06VPwokRYv534QaPC8g: {
+    body: "New York, NY, United States"
+    terms: [
+      "New York",
+      "NY",
+      "United States"
+    ],
+    type: "locality"
+  },
+  ...
+}
+```
 
 ### `getPlace(prediction, callback)`
 Retrieves details about the place.
@@ -108,6 +124,20 @@ Retrieves details about the place.
   - `terms`: array - prediction's string tokens.
   - `body`:  string - prediction's body.
 - `callback`: function - What to do with the result i.e: `(placeInfo) => console.log(placeInfo)`.
+
+The placeInfo passing to the callback, is an object with place's info like coords, prediction terms that couldn't find, status and of course all the place types that could find. For example:
+```
+{
+  coords: "40.6781784, -73.9441579",
+  sublocality: "Brooklyn",
+  locality: "New York",
+  administrativeAreaLevel1: "New York",
+  administrativeAreaLevel1Code: "NY",
+  country: "United States",
+  notValid: [],
+  status: "SUCCESS"
+}
+```
 
 ## Issues or feature requests
 
