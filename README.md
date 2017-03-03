@@ -2,7 +2,7 @@
 A simple factory using google places API to fetch predictions for places and get place details.
 
 ## Installation
-`npm i -S angular-google-places-autocomplete`
+`npm i -S google-places-autocomplete-service`
 
 Then add the Google Places API script to your page:
 
