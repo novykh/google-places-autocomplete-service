@@ -31,7 +31,6 @@ Then get place info:
 this.googlePlaces.getPlace(predictionObject, callback);
 ```
 
-And that's it.
 
 ## Configuration
 
