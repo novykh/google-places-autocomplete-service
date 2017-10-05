@@ -27,7 +27,9 @@ export const getPlaceTypes = ({outputPlaceTypes = []}) => {
   }, {});
 };
 
-export const getRestrictions = ({filterByCountry: country = ''}) => ({country});
+export const getRestrictions = ({filterByCountry: country = null}) => {
+  return country ? {country} : null;
+};
 
 export const getSearchStrategies = ({searchStrategies}) => {
   if (!searchStrategies) {
