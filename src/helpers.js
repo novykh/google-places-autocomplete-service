@@ -69,12 +69,9 @@ export const pipeStrategies = (selectedStrategies, allStrategies, resolve) => {
 };
 
 export const rejectByRegex = (predictions, regex) => {
-  if (!regex) {
-    return predictions;
-  }
-
-  return predictions
-    .filter(p => !regex.test(p.description));
+  return regex
+    ? predictions.filter(p => !regex.test(p.description))
+    : predictions;
 };
 
 export default {
