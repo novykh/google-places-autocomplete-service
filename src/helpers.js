@@ -8,7 +8,7 @@ export const getLatLong = (lat, long) => new global.google.maps.LatLng(lat, long
 
 export const getSearchType = ({type = 'locality'}) => validSearchTypes[type] || validSearchTypes.geocode;
 
-export const emptyResults = s => ({status: s});
+export const emptyResults = status => ({status});
 
 export const findPlaceByType = (data, placeType, placeTypes = {}) => data.find(d => {
   return placeTypes[d.types[0]] === placeType;
