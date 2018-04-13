@@ -67,7 +67,8 @@ export default function googlePlaces({...options}) {
                   [p.place_id]: {
                     body: p.description,
                     type: p.types[0],
-                    terms: p.terms.map(t => t.value)
+                    terms: p.terms.map(t => t.value),
+                    matched_substrings: p.matched_substrings
                   },
                   ...results
                 };
